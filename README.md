@@ -1,17 +1,5 @@
 # Italian Gender-specific Occupational Titles
 
-entities
-femine
-masculine
-nns
-static
-templates
-api.py
-list.tsv
-p2id.tsv
-script_chart.js
-utils.py 
-
 ## Visualizzazione del cambiamento d’uso del maschile e femminile nei titoli occupazionali
 
 <b> Citation </b>
@@ -26,3 +14,11 @@ utils.py
 python3 api.py
 ```
 The visualization will be available at [localhost:5000/](http://localhost:5000/)
+
+### Data
+
+1. entities: Occurrences of named entites lined to specific occupational titles per year.
+2. femine : Frequency of occupational titles per year (femine grammatical form).
+3. masculine : Frequency of occupational titles per year (masculine grammatical form).
+4. nns : Entities nearest neighborhood
+5. list.tsv : List of occupational titles (masculine/femine grammatical forms).
