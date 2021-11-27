@@ -17,7 +17,7 @@ The visualization will be available at [localhost:5000/](http://localhost:5000/)
 
 ### Data
 
-1. entities: Occurrences of named entites lined to specific occupational titles per year.
+1. entities: Occurrences of named entites linked to specific occupational titles per year.
 2. feminine : Frequency of occupational titles per year (feminine grammatical form).
 3. masculine : Frequency of occupational titles per year (masculine grammatical form).
 4. nns : Entities nearest neighborhood
