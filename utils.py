@@ -35,7 +35,7 @@ def get_entities():
 
     D2 = {}
 
-    path = '%s/%s'%('entities','femine')
+    path = '%s/%s'%('entities','feminine')
     for fname in os.listdir(path):
         prof = fname.split('.')[0]
         D2[prof] = {}
@@ -63,7 +63,7 @@ def get_title_freq():
                 D[job][j][1] = fr
 
     D2 = {}
-    fnames = sorted(os.listdir('femine'))
+    fnames = sorted(os.listdir('feminine'))
     for j,y in enumerate(fnames):
         with open('femine/%s'%y,'r') as f:
             for line in f:
