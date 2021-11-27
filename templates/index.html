@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Livelli di analisi del linguaggio</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="js/checkboxs.js"></script>
+<script src="js/script_chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+<style>
+
+.scroll {
+  	overflow: auto;
+ 	white-space: nowrap;
+}
+
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* aspect ratio */
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+
+svg .rect {
+  fill: gold;
+  stroke: steelblue;
+  stroke-width: 5px;
+}
+
+.hidden {
+	display : none;
+}
+
+.dropdown-menu {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+</style>
+  
+<script>
+
+var timeseries = {{ timeseries|safe }};
+var timeseries_f = {{ timeseries_f|safe }};
+var prof_f = "{{ prof_f|safe }}";
+var prof_m = "{{ prof_m|safe }}";
+var counts = {{ counts|safe }};
+var counts_f = {{ counts_f|safe }};
+
+function addContextgraph(tag,person){
+     var img = document.getElementById(tag+"_image");
+      if(img){
+	      img.remove();
+      }	
+      
+      var elem = document.createElement("div");
+      elem.setAttribute("id", tag+"_image");
+      elem.setAttribute("class","svg-container")
+      document.getElementById(tag).appendChild(elem); 
+      
+      d3.xml('/plot?person='+person.toLowerCase()).then(data => {
+    		d3.select('#'+tag+"_image").node().append(data.documentElement)
+      });
+      
+      d3.select('#'+tag+"_image").select("svg").attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "0 0 600 400").classed("svg-content-responsive", true);
+}
+
+function addPersonPhoto(tag,person,prof){
+      axios.get('/query?person='+person+'&job='+prof)
+	  .then((response) => {
+	    var img = document.getElementById(tag+"_image");
+	    if(img){
+	       img.remove();
+	       var text = document.getElementById(tag+"_text");
+	       text.remove();
+	    }
+	    if(response.data["image"] != undefined){
+	    	    image = response.data['image'];
+	    	    name = response.data['name'];
+	    	    birth = " ("+response.data['birth']+")";
+	    }else{
+	    	    image = "/images/default-avatar.png";
+	    	    name = "";
+	    	    birth = "";
+	    }
+	    var elem = document.createElement("img");
+            elem.setAttribute("src", image);
+            elem.setAttribute("width", "10%");
+            elem.setAttribute("id", tag+"_image");
+            elem.setAttribute("float", "left");
+            var elem2 = document.createElement("p");
+            elem2.setAttribute("id", tag+"_text");
+            elem2.setAttribute("style", "float:center");
+            document.getElementById(tag).appendChild(elem);
+            document.getElementById(tag).appendChild(elem2);
+            document.getElementById(tag+"_text").append(name+birth);
+      });
+}
+
+function formatPersonM(person) {
+  if (!person.id) {
+        return person.text;
+  } 
+
+  var $ht = $('<p>' + person.text + '<span class="badge badge-primary badge-pill float-right"> ' + counts[person.element.value].toString() + '</span></p>');
+  
+  return $ht;
+};
+
+function formatPersonF(person) {
+  if (!person.id) {
+        return person.text;
+  } 
+
+  var $ht = $('<p>' + person.text + '<span class="badge badge-primary badge-pill float-right"> ' + counts_f[person.element.value].toString() + '</span></p>');
+  
+  return $ht;
+};
+
+
+
+
+$(document).ready(function() {
+    $('.occupations').select2({
+        placeholder: "Seleziona una professione",
+    	allowClear: true
+    });
+    $('.occupations').on('select2:select', function (e) {
+        var data = e.params.data.text;
+	window.location.href = '?job='+data;
+    });
+    $('.persons_m').select2({
+    	templateResult: formatPersonM,
+    	placeholder: "Seleziona un "+prof_m,
+    	allowClear: true
+    });
+    $('.persons_f').select2({
+    	templateResult: formatPersonF,
+    	placeholder: "Seleziona una "+prof_f,
+    	allowClear: true
+    });
+    $('.persons_m').on('select2:select', function (e) {
+    	var data = e.params.data.id;
+        chart_m.updateSeries([fr_m,timeseries[data]]);
+        addPersonPhoto('mprofile',e.params.data.text,prof_m);
+        addContextgraph('mctx',e.params.data.text);
+    });
+    $('.persons_f').on('select2:select', function (e) {
+    	var data = e.params.data.id;
+        chart_f.updateSeries([fr_f,timeseries_f[data]]);
+        addPersonPhoto('fprofile',e.params.data.text,prof_m);
+        addContextgraph('fctx',e.params.data.text);
+    });
+});
+
+
+
+
+
+var yaxis_config = [ 
+	  {
+            opposite: true,
+            title: {
+              text: 'Frequenza cumulativa',
+            },
+            labels: {
+      			formatter: function(val, index) {
+        				return val.toExponential(2);
+      			}
+    	     }
+          },
+          {
+            title: {
+              text: 'Occorrenze individuali',
+            },
+            decimalsInFloat : 0
+          }
+]
+
+
+var options = {
+	series:[],
+          chart: {
+          type: 'area',
+          height: 350,
+          stacked: true,
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            opacityFrom: 0.6,
+            opacityTo: 0.8,
+          }
+        },
+        legend: {
+          show: true
+        },
+        xaxis: {
+          type: 'datetime'
+        },
+        yaxis: yaxis_config
+        };
+        
+
+</script>
+  
+</head>
+
+<body>
+
+<div class="container">
+<div class="row">
+
+  <select class="occupations">
+  		   <option></option>
+         	   {% for item in item_list %}
+         	   	   {% if item == prof_m+ '/' +prof_f %}
+	                  	<option value="{{ item }}" selected="selected">{{ item }}</option>
+	                  {% else %}
+	                  	<option value="{{ item }}">{{ item }}</option>
+	                  {% endif %}
+		   {% endfor %}
+  </select>
+</div>
+<div class="row">
+  <div class="col">
+  	  <div class="col text-left"><h3>{{prof_m}} </h3></div>
+	  <select class="persons_m">
+  		   <option></option>
+		 	   {% for t in timeseries %}
+			          <option value="{{ loop.index - 1 }}">{{ t["name"] }}</option>
+			   {% endfor %}
+	  </select>
+  </div>
+  <div class="col">
+    	  <div class="col text-left"><h3>{{prof_f}} </h3></div>
+	  <select class="persons_f">
+  		   <option></option>
+		 	   {% for t in timeseries_f %}
+			          <option value="{{ loop.index - 1 }}">{{ t["name"] }}</option>
+			   {% endfor %}
+	  </select>
+  </div>
+</div>
+<div class="row">
+		<div class="col-6">
+			<div id='chart_m'></div>
+			<script>
+				var fr_m = {{ fr_m|safe }};
+				var chart_m = new ApexCharts(document.querySelector("#chart_m"), options);
+				chart_m.render();
+				if(fr_m["name"] == "cumulativa"){
+						chart_m.updateSeries([fr_m]);
+				}	
+			</script>
+		
+			<div class=row>
+			<div id='mprofile'></div>
+			</div>
+			<div class=row>
+			<div id='mctx'></div>
+			</div>
+		</div>
+		
+		<div class="col-6">
+			<div id='chart_f'></div>
+			<script>
+				var fr_f = {{ fr_f|safe }};
+				var chart_f = new ApexCharts(document.querySelector("#chart_f"), options);
+				chart_f.render();
+				if(fr_f["name"] == "cumulativa"){
+						chart_f.updateSeries([fr_f]);
+				}	
+			</script>
+
+			<div class=row>
+			<div id='fprofile'></div>
+			</div>
+			<div class=row>
+			<div id='fctx'></div>
+			</div>
+	        </div>
+</div>
+</div>
+
+
+</body>
+</html>
+
