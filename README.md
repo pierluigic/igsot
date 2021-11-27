@@ -25,4 +25,4 @@ utils.py
 ```
 python3 api.py
 ```
-The visualization will be available at [localhost:5000/](url)
+The visualization will be available at [localhost:5000/](localhost:5000/)
