@@ -8,6 +8,28 @@
 
 <b> Citation </b>
 
+```
+@inproceedings{cassotti2021,
+  author    = {Pierluigi Cassotti and
+               Andrea Iovine and
+               Pierpaolo Basile and
+               Marco de Gemmis and
+               Giovanni Semeraro},
+  editor    = {Elisabetta Fersini and
+               Marco Passarotti and
+               Viviana Patti},
+  title     = {Emerging Trends in Gender-Specific Occupational Titles in Italian
+               Newspapers},
+  booktitle = {Proceedings of the Eighth Italian Conference on Computational Linguistics,
+               CLiC-it 2021, Milan, Italy, January 26-28, 2022},
+  series    = {{CEUR} Workshop Proceedings},
+  volume    = {3033},
+  publisher = {CEUR-WS.org},
+  year      = {2021},
+  url       = {http://ceur-ws.org/Vol-3033/paper52.pdf}
+}
+```
+
 ### Run the visualization
 
 ```
