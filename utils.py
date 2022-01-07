@@ -69,7 +69,7 @@ def get_title_freq():
             for line in f:
                 job,_,_,fr = line.split()
                 fr = float(fr)
-                if not job in D:
+                if not job in D2:
                     D2[job] = [[yr.split('.')[0],0.] for yr in fnames]
                 D2[job][j][1] = fr
     return D,D2
