@@ -65,7 +65,7 @@ def get_title_freq():
     D2 = {}
     fnames = sorted(os.listdir('feminine'))
     for j,y in enumerate(fnames):
-        with open('femine/%s'%y,'r') as f:
+        with open('feminine/%s'%y,'r') as f:
             for line in f:
                 job,_,_,fr = line.split()
                 fr = float(fr)
