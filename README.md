@@ -33,7 +33,7 @@
 ### Install dependencies
 
 ```
-python3 install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ### Run the visualization
