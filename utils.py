@@ -21,11 +21,11 @@ def prof_list():
 
 def get_entities():
     D = {}
-    path = '%s/%s'%('entities','masculine')
+    path = '%s%s%s'%('entities',os.sep,'masculine')
     for fname in os.listdir(path):
         prof = fname.split('.')[0]
         D[prof] = {}
-        with open('%s/%s'%(path,fname)) as f:
+        with open('%s%s%s'%(path,os.sep,fname)) as f:
             for line in f:
                 if len(line) > 2:
                     name, year, val = line.split('\t')
@@ -35,11 +35,11 @@ def get_entities():
 
     D2 = {}
 
-    path = '%s/%s'%('entities','feminine')
+    path = '%s%s%s'%('entities',os.sep,'feminine')
     for fname in os.listdir(path):
         prof = fname.split('.')[0]
         D2[prof] = {}
-        with open('%s/%s'%(path,fname)) as f:
+        with open('%s%s%s'%(path,os.sep,fname)) as f:
             for line in f:
                 if len(line) > 2:
                     name, year, val = line.split('\t')
@@ -54,7 +54,7 @@ def get_title_freq():
     D = {}
     fnames = sorted(os.listdir('masculine'))
     for j,y in enumerate(fnames):
-        with open('masculine/%s'%y,'r') as f:
+        with open('masculine%s%s'%(os.sep,y),'r') as f:
             for line in f:
                 job,_,_,fr = line.split()
                 fr = float(fr)
@@ -65,7 +65,7 @@ def get_title_freq():
     D2 = {}
     fnames = sorted(os.listdir('feminine'))
     for j,y in enumerate(fnames):
-        with open('feminine/%s'%y,'r') as f:
+        with open('feminine%s%s'%(os.sep,y),'r') as f:
             for line in f:
                 job,_,_,fr = line.split()
                 fr = float(fr)
