@@ -4,6 +4,24 @@
 
 <b> Citation </b>
 
+```
+@inproceedings{cassotti2022,
+  author    = {Pierluigi Cassotti and
+               Pierpaolo Basile and
+               Marco de Gemmis and
+               Giovanni Semeraro},
+  editor    = {Fabio Cirac{\`i} and Giulia Miglietta and Carola Gatto},
+  title     = {Visualizzazione del cambiamento d’uso del maschile e femminile nei titoli occupazionali},
+  booktitle = {AIUCD 2022 - Proceedings},
+  address   = {Milano, Italy},
+  month     = {1},
+  series    = {Quaderni di Umanistica Digitale},
+  year      = {2022},
+  url = {http://amsacta.unibo.it/6848/}
+}
+```
+
+
 ## Emerging trends in gender-specific occupational titles in Italian Newspapers
 
 <b> Citation </b>
