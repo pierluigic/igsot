@@ -61,6 +61,10 @@ python3 api.py
 ```
 The visualization will be available at [localhost:5000/](http://localhost:5000/)
 
+### Live version
+
+[http://193.204.187.210:54321](http://193.204.187.210:54321)
+
 ### Data
 
 1. entities: Occurrences of named entites linked to specific occupational titles per year.
